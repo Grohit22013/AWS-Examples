@@ -1,0 +1,4 @@
+tasks:
+  - name: Setup
+    init: echo "Workspace initialized"
+    command: bash
