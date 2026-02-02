@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+echo "==list newest bucketsbuckets"
+# ordinary coommmand where we just printed the bucket names as it is without jq query and sorting
+#aws s3api list-buckets --query "Buckets[].Name" --output text
+
+#command where we sorted the bucket names according to the name and printed the names of the bucket
+#aws s3api list-buckets | jq -r '.Buckets | sort_by(.CreationDate) | reverse | .[] | .Name'
+
+#command where we just printed the top five buckets of the list printed 
+aws s3api list-buckets | jq -r '.Buckets | sort_by(.CreationDate) | reverse | .[0:5] | .[] | .Name'
+echo "..."

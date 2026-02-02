@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+echo "delete object from the buckets"
+
+#exit immediately if the command return non-values
+set -e
+
+#check for bucket name
+if [ -z "$1" ]; then
+    echo "There needs to be a bucket name"
+    exit 1
+fi
+
+BUCKET_NAME=$1
+
+#this command will make sure that the objects in the buckets 
+#will be generated as a list which will be converted into json file
+aws s3api list-objects-v2 \
+--bucket $BUCKET_NAME \
+--query Contents[].Key \
+| jq -n '{Objects: [inputs | .[] | {Key: .}]}' > /tmp/delete_objects.json
+ 
+aws s3api delete-objects --bucket $BUCKET_NAME --delete file:///tmp/delete_objects.json
+
